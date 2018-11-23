@@ -21,11 +21,15 @@ type Props = {};
 export default class App extends Component<Props> {
   state = {
     username: "",
-    password: ""
+    password: "",
+    enabled: false
   };
 
   inputChangedHandler = value => {
-    this.setState({ username: value })
+    let enabled = true;
+    if (value === "")
+      enabled = false;
+    this.setState({ username: value, enabled: enabled })
   };
 
   onPressLearnMore = () => {
@@ -35,18 +39,20 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.welcome}>This is Nathan</Text>
-        <TextInput
-          style={{ width: 300, borderColor: black, borderWidth: 1 }}
-          value={this.state.username}
-          placeholder="Username"
-          onChangeText={this.inputChangedHandler}
-        />
-        <Button onPress={this.onPressLearnMore}
-          title="Show Input Content"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button" />
+        <Text>Welcome to React Native!</Text>
+        <View style={styles.loginForm}>
+          <TextInput
+            style={{width: 200}}
+            value={this.state.username}
+            placeholder="Username"
+            onChangeText={this.inputChangedHandler}
+          />
+          <Button onPress={this.onPressLearnMore}
+            title="Show Input Content"
+            disabled={!this.state.enabled}
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button" />
+        </View>
       </View>
     );
   }
@@ -59,4 +65,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  loginForm: {    
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });
