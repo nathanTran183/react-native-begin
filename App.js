@@ -6,8 +6,9 @@
  * @flow
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { black } from 'ansi-colors';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -18,12 +19,34 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  state = {
+    username: "",
+    password: ""
+  };
+
+  inputChangedHandler = value => {
+    this.setState({ username: value })
+  };
+
+  onPressLearnMore = () => {
+    alert(this.state.username);
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <Text style={styles.welcome}>This is Nathan</Text>
+        <TextInput
+          style={{ width: 300, borderColor: black, borderWidth: 1 }}
+          value={this.state.username}
+          placeholder="Username"
+          onChangeText={this.inputChangedHandler}
+        />
+        <Button onPress={this.onPressLearnMore}
+          title="Show Input Content"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button" />
       </View>
     );
   }
@@ -32,18 +55,8 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
