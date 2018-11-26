@@ -8,6 +8,8 @@
 
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import PlaceInput from './src/components/PlaceInput/PlaceInput';
+import PlaceList from './src/components/PlaceList/PlaceList';
 import { black } from 'ansi-colors';
 
 const instructions = Platform.select({
@@ -20,40 +22,30 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   state = {
-    placeName: "",    
-    enabled: false
-  };
+    places: [],
+  }
 
-  inputChangedHandler = value => {
-    let enabled = true;
-    if (value === "")
-      enabled = false;
-    this.setState({ placeName: value, enabled: enabled })
-  };
+  addPlaceHandler = placeName => {
+    if (placeName.trim() === "")
+      return
+    let newPlaces = this.state.places.concat({key: Math.random(), value: placeName});
+    this.setState({ places: newPlaces})
+  }
 
-  onPressLearnMore = () => {
-    alert(this.state.placeName);
+  removePlaceHandler = (index) => {
+    this.setState( (prevState) => {
+      return { places: prevState.places.filter(place => {
+        return place.key !== index
+      }) }
+    } );
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Welcome to React Native!</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.placeInput}
-            value={this.state.placeName}
-            placeholder="Place Name"
-            onChangeText={this.inputChangedHandler}
-          />
-          <Button 
-            onPress={this.onPressLearnMore}
-            title="Add"
-            disabled={!this.state.enabled}
-            style={styles.placeButton}
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button" />
-        </View>
+        <PlaceInput onAddItem={this.addPlaceHandler} />
+        <PlaceList places={this.state.places} onDeleteItem={this.removePlaceHandler} />
       </View>
     );
   }
@@ -62,19 +54,11 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 26,
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  placeInput: {
-    width: "70%",
-  },
-  placeButton: {
-    width: "30%",
-  }
+
+
 });
