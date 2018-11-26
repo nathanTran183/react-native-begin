@@ -20,8 +20,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   state = {
-    username: "",
-    password: "",
+    placeName: "",    
     enabled: false
   };
 
@@ -29,27 +28,29 @@ export default class App extends Component<Props> {
     let enabled = true;
     if (value === "")
       enabled = false;
-    this.setState({ username: value, enabled: enabled })
+    this.setState({ placeName: value, enabled: enabled })
   };
 
   onPressLearnMore = () => {
-    alert(this.state.username);
+    alert(this.state.placeName);
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Welcome to React Native!</Text>
-        <View style={styles.loginForm}>
+        <View style={styles.inputContainer}>
           <TextInput
-            style={{width: 200}}
-            value={this.state.username}
-            placeholder="Username"
+            style={styles.placeInput}
+            value={this.state.placeName}
+            placeholder="Place Name"
             onChangeText={this.inputChangedHandler}
           />
-          <Button onPress={this.onPressLearnMore}
-            title="Show Input Content"
+          <Button 
+            onPress={this.onPressLearnMore}
+            title="Add"
             disabled={!this.state.enabled}
+            style={styles.placeButton}
             color="#841584"
             accessibilityLabel="Learn more about this purple button" />
         </View>
@@ -65,8 +66,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  loginForm: {    
+  inputContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  placeInput: {
+    width: "70%",
+  },
+  placeButton: {
+    width: "30%",
   }
 });
