@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import PlaceInput from './src/components/PlaceInput/PlaceInput';
 import PlaceList from './src/components/PlaceList/PlaceList';
+import Img from './src/assets/beautiful-place.jpg'
 import { black } from 'ansi-colors';
 
 const instructions = Platform.select({
@@ -28,7 +29,7 @@ export default class App extends Component<Props> {
   addPlaceHandler = placeName => {
     if (placeName.trim() === "")
       return
-    let newPlaces = this.state.places.concat({key: Math.random(), value: placeName});
+    let newPlaces = this.state.places.concat({key: Math.random(), name: placeName, img: Img});
     this.setState({ places: newPlaces})
   }
 

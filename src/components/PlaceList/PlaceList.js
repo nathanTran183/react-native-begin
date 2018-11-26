@@ -12,7 +12,9 @@ const PlaceInput = (props) => {
                 <ListItem
                     key={data.item.key}
                     onItemPressed={() => props.onDeleteItem(data.item.key)}
-                    placeName={data.item.value} />
+                    placeName={data.item.name} 
+                    placeImage={data.item.img}
+                    />
             )}
         />
     );
