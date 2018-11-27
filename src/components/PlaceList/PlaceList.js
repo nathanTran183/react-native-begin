@@ -4,26 +4,26 @@ import ListItem from '../ListItem/ListItem';
 
 const PlaceInput = (props) => {
 
-    return (
-        <FlatList
-            style={styles.listItemContainer}
-            data={props.places}
-            renderItem={(data) => (
-                <ListItem
-                    key={data.item.key}
-                    onItemPressed={() => props.onDeleteItem(data.item.key)}
-                    placeName={data.item.name} 
-                    placeImage={data.item.img}
-                    />
-            )}
+  return (
+    <FlatList
+      keyExtractor={(item, index) => (item.key + "")}
+      style={styles.listItemContainer}
+      data={props.places}
+      renderItem={({ item }) => (
+        <ListItem
+          onItemPressed={() => props.onItemSelected(item.key)}
+          placeName={item.name}
+          placeImage={item.img}
         />
-    );
+      )}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
-    listItemContainer: {
-        width: '100%'
-    }
+  listItemContainer: {
+    width: '100%'
+  }
 })
 
 export default PlaceInput;
