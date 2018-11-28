@@ -1,7 +1,8 @@
 /** @format */
-import React from 'react';
+// import React from 'react';
+import App from './App';
 // import { AppRegistry } from 'react-native';
-import { Navigation } from "react-native-navigation";
+/* import { Navigation } from "react-native-navigation";
 import { Provider } from 'react-redux';
 import App from './App';
 import { name as appName } from './app.json';
@@ -24,4 +25,4 @@ Navigation.events().registerAppLaunchedListener(() => {
       }
     }
   });
-});
+}); */

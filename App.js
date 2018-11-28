@@ -7,7 +7,42 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Navigation } from 'react-native-navigation';
+import AuthScreen from './src/screens/Auth/Auth';
+import FindPlaceScreen from './src/screens/FindPlace/FindPlace';
+import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
+
+Navigation.registerComponent('RNCourse.AuthScreen', () => AuthScreen);
+Navigation.registerComponent('RNCourse.FindPlaceScreen', () => FindPlaceScreen);
+Navigation.registerComponent('RNCourse.SharePlaceScreen', () => SharePlaceScreen);
+
+
+Navigation.setRoot({
+  root: {
+    stack: {
+      children: [{
+        component: {
+          name: 'RNCourse.AuthScreen',
+        }
+      }],
+      options: {
+        topBar: {
+          title: "SIGN IN",
+          hideOnScroll: true,
+          subtitle: {
+            text: 'Title',
+            fontSize: 14,
+            color: 'red',
+            fontFamily: 'Helvetica',
+            alignment: 'center'
+          },
+        }
+      }
+    }
+  }
+})
+
+/* import { Platform, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { PlacesActions } from './src/store/actions/places';
 import PlaceInput from './src/components/PlaceInput/PlaceInput';
@@ -83,4 +118,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App) */
