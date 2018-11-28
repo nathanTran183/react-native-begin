@@ -4,8 +4,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const startMainTabs = () => {
   Promise.all([
-    Icon.getImageSource('map',30,'green'),
-    Icon.getImageSource('place',30,'green')
+    Icon.getImageSource("map", 30),
+    Icon.getImageSource("place", 30)
   ]).then(sources => {
     Navigation.setRoot({
       root: {
@@ -18,7 +18,7 @@ const startMainTabs = () => {
                 options: {
                   bottomTab: {
                     text: 'Tab 1',
-                    icon: source[0]
+                    icon: sources[0]
                   }
                 }
               }
@@ -29,7 +29,7 @@ const startMainTabs = () => {
                 options: {
                   bottomTab: {
                     text: 'Tab 2',
-                    icon: source[1]
+                    icon: sources[1]
                   }
                 }
               }
@@ -39,7 +39,7 @@ const startMainTabs = () => {
       }
     });
   })
-  
+
 }
 
 export default startMainTabs;
