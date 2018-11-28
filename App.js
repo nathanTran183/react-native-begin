@@ -26,38 +26,18 @@ const instructions = Platform.select({
 class App extends Component {
 
   addPlaceHandler = placeName => {
-    // if (placeName.trim() === "")
-    //   return
-    // let newPlaces = this.state.places.concat({
-    //   key: Math.random(),
-    //   name: placeName,
-    //   img: { uri: 'https://www.visitbritain.com/sites/default/files/consumer_destinations/teaser_images/manchester_town_hall.jpg' }
-    // });
-    // this.setState({ places: newPlaces })
     this.props.addPlace(placeName);
   }
 
   placeSelectedHandler = (key) => {
-    // this.setState(prevState => {
-    //   return { selectedPlace: prevState.places.find(place => place.key === key) }
-    // })
     this.props.selectPlace(key);
   }
 
   placeDeletedHandler = () => {
-    // this.setState((prevState) => {
-    //   return {
-    //     places: prevState.places.filter(place => {
-    //       return place.key !== prevState.selectedPlace.key
-    //     }),
-    //     selectedPlace: null
-    //   }
-    // });
     this.props.deletePlace();
   }
 
   modalClosedHandler = () => {
-    // this.setState({selectedPlace: null})
     this.props.deselectPlace();
   }
 
