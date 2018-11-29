@@ -9,7 +9,6 @@ class AuthScreen extends Component {
   }
 
   render() {
-    console.log(this.props.componentId);
     return (
       <View>
         <Text>Authentication Screen</Text>

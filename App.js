@@ -13,6 +13,7 @@ import AuthScreen from './src/screens/Auth/Auth';
 import FindPlaceScreen from './src/screens/FindPlace/FindPlace';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
+import SideDrawerScreen from './src/screens/SideDrawer/SideDrawer';
 import configureStore from './src/store/configureStore';
 
 const store = configureStore();
@@ -21,6 +22,7 @@ Navigation.registerComponentWithRedux('RNCourse.AuthScreen', () => AuthScreen, P
 Navigation.registerComponentWithRedux('RNCourse.FindPlaceScreen', () => FindPlaceScreen, Provider, store);
 Navigation.registerComponentWithRedux('RNCourse.SharePlaceScreen', () => SharePlaceScreen, Provider, store);
 Navigation.registerComponentWithRedux('RNCourse.PlaceDetailScreen', () => PlaceDetailScreen, Provider, store);
+Navigation.registerComponent('RNCourse.SideDrawerScreen', () => SideDrawerScreen);
 
 
 Navigation.setRoot({

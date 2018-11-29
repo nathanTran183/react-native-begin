@@ -3,9 +3,28 @@ import { View, Text } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import PlaceList from '../../components/PlaceList/PlaceList';
 import { connect } from 'react-redux';
-import {PlacesActions} from '../../store/actions/index';
+// import {PlacesActions} from '../../store/actions/index';
 
 class FindPlaceScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    Navigation.events().bindComponent(this);
+    Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
+      if (selectedTabIndex === unselectedTabIndex === 1)
+        Navigation.popToRoot(this.props.componentId);
+    });
+  }
+
+  navigationButtonPressed({ buttonId }) {
+    Navigation.mergeOptions(this.props.componentId, {
+      sideMenu: {
+        left: {
+          visible: true
+        }
+      }
+    });
+  }
 
   selectPlaceHandler = key => {
     const selectedPlace = this.props.places.find(x => x.key === key);
@@ -28,6 +47,8 @@ class FindPlaceScreen extends Component {
   }
 
   render() {
+    // console.log(this.props);
+        
     return (
       <View>
         <PlaceList places={this.props.places} onItemSelected={this.selectPlaceHandler} />
