@@ -1,8 +1,7 @@
 import ActionTypes from '../actions/ActionTypes';
 
 const initialState = {
-  places: [],
-  selectedPlace: null
+  places: []
 }
 
 const updatedObject = (oldObject, updatedObject) => {
@@ -23,18 +22,9 @@ const addPlace = (state, action) => {
 
 const deletePlace = (state, action) => {
   let newPlaces = state.places.filter(place => {
-    return place.key !== state.selectedPlace.key
+    return place.key !== action.data.key
   });
-  return updatedObject(state, { places: newPlaces, selectedPlace: null });
-}
-
-const selectPlace = (state, action) => {
-  let selectedPlace = state.places.find(place => place.key === action.data.key);
-  return updatedObject(state, {selectedPlace: selectedPlace});
-}
-
-const deselectPlace = (state, action) => {
-  return updatedObject(state, {selectedPlace: null})
+  return updatedObject(state, { places: newPlaces });
 }
 
 const reducer = (state = initialState, action) => {
@@ -43,10 +33,6 @@ const reducer = (state = initialState, action) => {
       return addPlace(state, action);
     case ActionTypes.DELETE_PLACE:
       return deletePlace(state, action);
-    case ActionTypes.SELECT_PLACE:
-      return selectPlace(state, action);
-    case ActionTypes.DESELECT_PLACE:
-      return deselectPlace(state, action);
   }
   return state;
 }

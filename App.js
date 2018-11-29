@@ -7,14 +7,20 @@
  */
 
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import AuthScreen from './src/screens/Auth/Auth';
 import FindPlaceScreen from './src/screens/FindPlace/FindPlace';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
+import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
+import configureStore from './src/store/configureStore';
 
-Navigation.registerComponent('RNCourse.AuthScreen', () => AuthScreen);
-Navigation.registerComponent('RNCourse.FindPlaceScreen', () => FindPlaceScreen);
-Navigation.registerComponent('RNCourse.SharePlaceScreen', () => SharePlaceScreen);
+const store = configureStore();
+
+Navigation.registerComponentWithRedux('RNCourse.AuthScreen', () => AuthScreen, Provider, store);
+Navigation.registerComponentWithRedux('RNCourse.FindPlaceScreen', () => FindPlaceScreen, Provider, store);
+Navigation.registerComponentWithRedux('RNCourse.SharePlaceScreen', () => SharePlaceScreen, Provider, store);
+Navigation.registerComponentWithRedux('RNCourse.PlaceDetailScreen', () => PlaceDetailScreen, Provider, store);
 
 
 Navigation.setRoot({
@@ -26,11 +32,10 @@ Navigation.setRoot({
         }
       }],
       options: {
-        topBar: {
-          title: "SIGN IN",
+        topBar: {          
           hideOnScroll: true,
           subtitle: {
-            text: 'Title',
+            text: 'SIGN IN',
             fontSize: 14,
             color: 'red',
             fontFamily: 'Helvetica',

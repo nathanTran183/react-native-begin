@@ -1,27 +1,27 @@
 import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
-import { Navigation } from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import PlaceInput from '../../components/PlaceInput/PlaceInput';
+import { connect } from 'react-redux';
+import { PlacesActions } from '../../store/actions/index';
 
 class SharePlaceScreen extends Component {
-  changePage = () => {
-    Navigation.mergeOptions('HomePageBottomTabs', {
-      bottomTabs: {
-        currentTabIndex: 1,
-        visible: false
-      }
-    })
+  addPlaceHandler = (placeName) => {
+    this.props.addPlace(placeName);
   }
 
-  render() {
+  render() {   
     return (
       <View>
-        <Text>On SharePlaceScreen</Text>
-        <Icon color="red" name="map" size={30}></Icon>
-        <Button onPress={this.changePage} title="Change Page" />
+        <PlaceInput onAddItem={this.addPlaceHandler} />
       </View>
     )
   }
 }
 
-export default SharePlaceScreen;
+const mapDispatchToProps = dispatch => {
+  return {
+    addPlace: (placeName) => dispatch(PlacesActions.addPlace(placeName))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SharePlaceScreen);
