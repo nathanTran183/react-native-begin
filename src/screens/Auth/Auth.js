@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
 import startMainTabs from '../MainTabs/StartMainTabs';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
+import MainText from '../../components/UI/MainText/MainText';
+import BackgroundImg from '../../assets/background.jpg';
 
 class AuthScreen extends Component {
 
@@ -16,15 +18,19 @@ class AuthScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <HeadingText style={styles.headingText}>Sign In</HeadingText>
-        <View style={styles.inputContainer}>
-          <DefaultInput style={styles.input} placeholder="Email Address" />
-          <DefaultInput style={styles.input} placeholder="Password" />
+      <ImageBackground style={styles.backgroundImage} source={BackgroundImg}>
+        <View style={styles.container}>
+          <MainText>
+            <HeadingText style={styles.headingText}>Sign In</HeadingText>
+          </MainText>
+          <View style={styles.inputContainer}>
+            <DefaultInput style={styles.input} placeholder="Email Address" />
+            <DefaultInput style={styles.input} placeholder="Password" />
+          </View>
+          <Button onPress={this.signInHandler} title="Sign In" />
+          <Text style={{ margin: 10 }} onPress={this.openSignUpView}>Don't have account? Sign Up!</Text>
         </View>
-        <Button onPress={this.signInHandler} title="Sign In" />
-        <Text style={{ margin: 10 }} onPress={this.openSignUpView}>Don't have account? Sign Up!</Text>
-      </View>
+      </ImageBackground>
     );
   }
 }
@@ -36,7 +42,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10
   },
-  
+  backgroundImage: {
+    width: "100%",
+    flex: 1
+  },
   inputContainer: {
     width: "80%"
   },

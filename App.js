@@ -35,14 +35,9 @@ Navigation.setRoot({
       }],
       options: {
         topBar: {          
-          hideOnScroll: true,
-          subtitle: {
-            text: 'SIGN IN',
-            fontSize: 14,
-            color: 'red',
-            fontFamily: 'Helvetica',
-            alignment: 'center'
-          },
+          // animate: false,
+          visible: false,
+          drawBehind: true
         }
       }
     }
