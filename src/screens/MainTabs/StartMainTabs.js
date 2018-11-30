@@ -1,12 +1,12 @@
 import { Navigation } from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Platform} from 'react-native';
 
 const startMainTabs = () => {
   Promise.all([
-    Icon.getImageSource("map", 30, 'green'),
-    Icon.getImageSource("place", 30, 'green'),
-    Icon.getImageSource("menu", 30, 'green')
+    Icon.getImageSource(Platform.OS === "android" ? "md-share-alt" : "ios-share", 30, 'green'),
+    Icon.getImageSource(Platform.OS === "android" ? "md-map" : "ios-map", 30, 'green'),
+    Icon.getImageSource(Platform.OS === "android" ? "md-menu" : "ios-menu", 30, 'green')
   ]).then(sources => {
     Navigation.setRoot({
       root: {
@@ -14,7 +14,7 @@ const startMainTabs = () => {
           left: {
             component: {
               name: 'RNCourse.SideDrawerScreen'
-            }            
+            }
           },
           center: {
             bottomTabs: {

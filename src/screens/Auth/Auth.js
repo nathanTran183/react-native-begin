@@ -4,6 +4,7 @@ import startMainTabs from '../MainTabs/StartMainTabs';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
+// import ButtonWithBg from '../../components/UI/ButtonWithBg/ButtonWithBg';
 import BackgroundImg from '../../assets/background.jpg';
 
 class AuthScreen extends Component {
@@ -27,6 +28,7 @@ class AuthScreen extends Component {
             <DefaultInput style={styles.input} placeholder="Email Address" />
             <DefaultInput style={styles.input} placeholder="Password" />
           </View>
+          {/* <ButtonWithBg onPress={this.signInHandler} color={'blue'} title="Sign In" /> */}
           <Button onPress={this.signInHandler} title="Sign In" />
           <Text style={{ margin: 10 }} onPress={this.openSignUpView}>Don't have account? Sign Up!</Text>
         </View>
