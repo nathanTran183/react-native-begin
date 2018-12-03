@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: "#eee",
     padding: 10,
-    margin: 8,
+    marginTop: 8,
+    marginBottom: 8,
     width: "100%",
   }
 })

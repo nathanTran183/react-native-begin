@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import startMainTabs from '../MainTabs/StartMainTabs';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
@@ -8,6 +8,25 @@ import MainText from '../../components/UI/MainText/MainText';
 import BackgroundImg from '../../assets/background.jpg';
 
 class AuthScreen extends Component {
+  state = {
+    viewMode: 'portrait'
+  }
+
+  constructor(props) {
+    super(props);
+    Dimensions.addEventListener('change', this.updateState)
+  }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.updateState);
+  }
+
+  updateState = dims => {
+    this.setState({
+      viewMode: dims.window.height > 500 ? 'portrait' : 'landscape'
+    })
+  }
+
 
   signInHandler = () => {
     startMainTabs();
@@ -25,10 +44,15 @@ class AuthScreen extends Component {
             <HeadingText style={styles.headingText}>Sign In</HeadingText>
           </MainText>
           <View style={styles.inputContainer}>
-            <DefaultInput style={styles.input} placeholder="Email Address" />
-            <DefaultInput style={styles.input} placeholder="Password" />
+            <View style={this.state.viewMode === 'portrait' ? styles.portraitInputContainer : styles.landscapeInputContainer}>
+              <View style={this.state.viewMode === 'portrait' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
+                <DefaultInput style={styles.input} placeholder="Email Address" />
+              </View>
+              <View style={this.state.viewMode === 'portrait' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
+                <DefaultInput style={styles.input} placeholder="Password" />
+              </View>
+            </View>
           </View>
-          {/* <ButtonWithBg onPress={this.signInHandler} color={'blue'} title="Sign In" /> */}
           <Button onPress={this.signInHandler} title="Sign In" />
           <Text style={{ margin: 10 }} onPress={this.openSignUpView}>Don't have account? Sign Up!</Text>
         </View>
@@ -54,6 +78,20 @@ const styles = StyleSheet.create({
   input: {
     borderColor: "#bbb",
     backgroundColor: "#eee"
+  },
+  landscapeInputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  portraitInputContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
+  landscapeInputWrapper: {
+    width: '45%'
+  },
+  portraitInputWrapper: {
+    width: '100%'
   }
 })
 
