@@ -20,7 +20,7 @@ class SharePlaceScreen extends Component {
     super(props);
     Navigation.events().bindComponent(this);
     Navigation.events().registerBottomTabSelectedListener(({ selectedTabIndex, unselectedTabIndex }) => {
-      if (selectedTabIndex === unselectedTabIndex === 1)
+      if (selectedTabIndex === unselectedTabIndex)
         Navigation.popToRoot(this.props.componentId);
     });
   }

@@ -1,6 +1,6 @@
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Platform} from 'react-native';
+import { Platform } from 'react-native';
 
 const startMainTabs = () => {
   Promise.all([
@@ -19,6 +19,13 @@ const startMainTabs = () => {
           center: {
             bottomTabs: {
               id: 'BottomTabsId',
+              options: {
+                bottomTabs: {
+                  visible: true,
+                  translucent: true,
+                  currentTabIndex: 1,
+                },
+              },
               children: [{
                 stack: {
                   children: [{
@@ -31,13 +38,18 @@ const startMainTabs = () => {
                       leftButtons: [
                         {
                           id: 'leftButton',
-                          icon: sources[2]
+                          icon: sources[2],
+                          color: '#6d6acd'
                         }
                       ],
                     },
                     bottomTab: {
                       text: 'Find Place',
-                      icon: sources[1]
+                      icon: sources[1],
+                      iconColor: '#99b6de',
+                      textColor: '#99b6de',
+                      selectedIconColor: '#6d6acd',
+                      selectedTextColor: '#6d6acd6d6acd',
                     }
                   }
                 }
@@ -54,13 +66,18 @@ const startMainTabs = () => {
                       leftButtons: [
                         {
                           id: 'leftButton',
-                          icon: sources[2]
+                          icon: sources[2],
+                          color: '#6d6acd'
                         }
                       ],
                     },
                     bottomTab: {
                       text: 'Share Place',
-                      icon: sources[0]
+                      icon: sources[0],
+                      iconColor: '#99b6de',
+                      textColor: '#99b6de',
+                      selectedIconColor: '#6d6acd',
+                      selectedTextColor: '#6d6acd',
                     }
                   }
                 }
