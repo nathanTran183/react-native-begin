@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, Dimensions, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+// import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { toHome, toSignIn } from '../../navigations/navigation';
 
 class SideDrawer extends Component {
+  onSignout = () => {
+    toSignIn();
+  }
+
   render() {
     return (
       <View
@@ -12,9 +17,9 @@ class SideDrawer extends Component {
           { width: Dimensions.get("window").width * 0.8 }
         ]}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.onSignout}>
           <View style={styles.drawerItem}>
-            <Icon name={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'} size={20} color="#aaa" style={{margin: 5}} />
+            <Icon name={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'} size={20} color="#aaa" style={{ margin: 5 }} />
             <Text>Sign Out</Text>
           </View>
         </TouchableOpacity>
@@ -33,7 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#eee',    
+    backgroundColor: '#eee',
   }
 });
 

@@ -2,7 +2,26 @@ import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Platform } from 'react-native';
 
-const startMainTabs = () => {
+export const toSignIn = () => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [{
+          component: {
+            name: 'RNCourse.AuthScreen',
+          }
+        }],
+        options: {
+          topBar: {
+            visible: false,
+            drawBehind: true
+          }
+        }
+      }
+    }
+  });
+};
+export const toHome = (tabIndex = 0) => {
   Promise.all([
     Icon.getImageSource(Platform.OS === "android" ? "md-share-alt" : "ios-share", 30, 'green'),
     Icon.getImageSource(Platform.OS === "android" ? "md-map" : "ios-map", 30, 'green'),
@@ -23,7 +42,7 @@ const startMainTabs = () => {
                 bottomTabs: {
                   visible: true,
                   translucent: true,
-                  currentTabIndex: 1,
+                  currentTabIndex: tabIndex,
                 },
               },
               children: [{
@@ -89,5 +108,3 @@ const startMainTabs = () => {
     });
   });
 }
-
-export default startMainTabs;

@@ -15,6 +15,7 @@ import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
 import SideDrawerScreen from './src/screens/SideDrawer/SideDrawer';
 import configureStore from './src/store/configureStore';
+import {toSignIn} from './src/navigations/navigation';
 
 const store = configureStore();
 
@@ -24,25 +25,7 @@ Navigation.registerComponentWithRedux('RNCourse.SharePlaceScreen', () => SharePl
 Navigation.registerComponentWithRedux('RNCourse.PlaceDetailScreen', () => PlaceDetailScreen, Provider, store);
 Navigation.registerComponent('RNCourse.SideDrawerScreen', () => SideDrawerScreen);
 
-
-Navigation.setRoot({
-  root: {
-    stack: {
-      children: [{
-        component: {
-          name: 'RNCourse.AuthScreen',
-        }
-      }],
-      options: {
-        topBar: {          
-          // animate: false,
-          visible: false,
-          drawBehind: true
-        }
-      }
-    }
-  }
-})
+toSignIn();
 
 /* import { Platform, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
