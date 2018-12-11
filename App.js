@@ -7,7 +7,27 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { Navigation } from 'react-native-navigation';
+import AuthScreen from './src/screens/Auth/Auth';
+import FindPlaceScreen from './src/screens/FindPlace/FindPlace';
+import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
+import PlaceDetailScreen from './src/screens/PlaceDetail/PlaceDetail';
+import SideDrawerScreen from './src/screens/SideDrawer/SideDrawer';
+import configureStore from './src/store/configureStore';
+import {toSignIn} from './src/navigations/navigation';
+
+const store = configureStore();
+
+Navigation.registerComponentWithRedux('RNCourse.AuthScreen', () => AuthScreen, Provider, store);
+Navigation.registerComponentWithRedux('RNCourse.FindPlaceScreen', () => FindPlaceScreen, Provider, store);
+Navigation.registerComponentWithRedux('RNCourse.SharePlaceScreen', () => SharePlaceScreen, Provider, store);
+Navigation.registerComponentWithRedux('RNCourse.PlaceDetailScreen', () => PlaceDetailScreen, Provider, store);
+Navigation.registerComponent('RNCourse.SideDrawerScreen', () => SideDrawerScreen);
+
+toSignIn();
+
+/* import { Platform, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { PlacesActions } from './src/store/actions/places';
 import PlaceInput from './src/components/PlaceInput/PlaceInput';
@@ -26,38 +46,18 @@ const instructions = Platform.select({
 class App extends Component {
 
   addPlaceHandler = placeName => {
-    // if (placeName.trim() === "")
-    //   return
-    // let newPlaces = this.state.places.concat({
-    //   key: Math.random(),
-    //   name: placeName,
-    //   img: { uri: 'https://www.visitbritain.com/sites/default/files/consumer_destinations/teaser_images/manchester_town_hall.jpg' }
-    // });
-    // this.setState({ places: newPlaces })
     this.props.addPlace(placeName);
   }
 
   placeSelectedHandler = (key) => {
-    // this.setState(prevState => {
-    //   return { selectedPlace: prevState.places.find(place => place.key === key) }
-    // })
     this.props.selectPlace(key);
   }
 
   placeDeletedHandler = () => {
-    // this.setState((prevState) => {
-    //   return {
-    //     places: prevState.places.filter(place => {
-    //       return place.key !== prevState.selectedPlace.key
-    //     }),
-    //     selectedPlace: null
-    //   }
-    // });
     this.props.deletePlace();
   }
 
   modalClosedHandler = () => {
-    // this.setState({selectedPlace: null})
     this.props.deselectPlace();
   }
 
@@ -103,4 +103,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App) */

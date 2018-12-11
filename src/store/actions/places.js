@@ -10,24 +10,12 @@ export const PlacesActions = {
     }
   },
 
-  deletePlace: () => {
+  deletePlace: (key) => {
     return {
-      type: ActionTypes.DELETE_PLACE
-    }
-  },
-
-  selectPlace: (key) => {
-    return {
-      type: ActionTypes.SELECT_PLACE,
+      type: ActionTypes.DELETE_PLACE,
       data: {
         key: key
       }
     }
-  },
-
-  deselectPlace: () => {
-    return {
-      type: ActionTypes.DESELECT_PLACE
-    }
   }
-};
+}
