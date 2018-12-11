@@ -1,15 +1,43 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, Dimensions } from 'react-native';
-import startMainTabs from '../MainTabs/StartMainTabs';
+import { View, Text, Button, StyleSheet, ImageBackground, Dimensions, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 // import ButtonWithBg from '../../components/UI/ButtonWithBg/ButtonWithBg';
 import BackgroundImg from '../../assets/background.jpg';
+import validate from '../../utilities/validation';
+import { toHome } from '../../navigations/navigation';
 
 class AuthScreen extends Component {
   state = {
-    viewMode: 'portrait'
+    viewMode: 'portrait',
+    authMode: 'signin',
+    controls: {
+      email: {
+        value: "",
+        valid: false,
+        validationRules: {
+          isEmail: true
+        },
+        touched: false
+      },
+      password: {
+        value: "",
+        valid: false,
+        validationRules: {
+          minLength: 6
+        },
+        touched: false
+      },
+      confirmPassword: {
+        value: "",
+        valid: false,
+        validationRules: {
+          equalTo: 'password'
+        },
+        touched: false
+      }
+    }
   }
 
   constructor(props) {
@@ -27,35 +55,113 @@ class AuthScreen extends Component {
     })
   }
 
-
-  signInHandler = () => {
-    startMainTabs();
+  authSubmitHandler = () => {
+    toHome();
   }
 
-  openSignUpView = () => {
-    alert('Open Sign Up View');
+  changeView = () => {
+    this.setState(prevState => {
+      return {
+        authMode: prevState.authMode === 'signin' ? 'signup' : 'signin'
+      }
+    })
+  }
+
+  onChangedTextHandler = (key, value) => {
+    let connectedValue = {}
+    if (this.state.controls[key].validationRules.equalTo) {
+      connectedValue = {
+        ...connectedValue,
+        equalTo: this.state.controls[this.state.controls[key].validationRules.equalTo].value
+      }
+    }
+    if (key === 'password') {
+      connectedValue = {
+        ...connectedValue,
+        equalTo: value
+      }
+    }
+    this.setState(prevState => {
+      return {
+        controls: {
+          ...prevState.controls,
+          confirmPassword: {
+            ...prevState.controls.confirmPassword,
+            valid: key === 'password' ? validate(prevState.controls.confirmPassword.value, prevState.controls.confirmPassword.validationRules, connectedValue) : prevState.controls.confirmPassword.valid
+          },
+          [key]: {
+            ...prevState.controls[key],
+            value: value,
+            valid: validate(value, prevState.controls[key].validationRules, connectedValue),
+            touched: true
+          },
+
+        }
+      }
+    })
   }
 
   render() {
+    let signUpView = (
+      <View style={this.state.viewMode === 'portrait' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
+        <DefaultInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={this.state.controls.confirmPassword.value}
+          valid={this.state.controls.confirmPassword.valid}
+          touched={this.state.controls.confirmPassword.touched}
+          onChangeText={(value) => this.onChangedTextHandler('confirmPassword', value)}
+          secureTextEntry
+        />
+      </View>
+    )
+    if (this.state.authMode === 'signin')
+      signUpView = null;
     return (
       <ImageBackground style={styles.backgroundImage} source={BackgroundImg}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
           <MainText>
-            <HeadingText style={styles.headingText}>Sign In</HeadingText>
+            <HeadingText style={styles.headingText}>{this.state.authMode === 'signin' ? 'Sign In' : 'Sign Up'}</HeadingText>
           </MainText>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inputContainer}>
-            <View style={this.state.viewMode === 'portrait' ? styles.portraitInputContainer : styles.landscapeInputContainer}>
-              <View style={this.state.viewMode === 'portrait' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
-                <DefaultInput style={styles.input} placeholder="Email Address" />
+            <DefaultInput style={styles.input}
+              placeholder="Email Address"
+              value={this.state.controls.email.value}
+              valid={this.state.controls.email.valid}
+              touched={this.state.controls.email.touched}
+              onChangeText={(value) => this.onChangedTextHandler('email', value)}
+              keyboardType="email-address"
+              autoCorrect={false}
+              autoCapitalize="none"
+            />
+            <View style={this.state.viewMode === 'portrait' || this.state.authMode === 'signin' ? styles.portraitInputContainer : styles.landscapeInputContainer}>
+              <View style={this.state.viewMode === 'portrait' || this.state.authMode === 'signin' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
+                <DefaultInput
+                  style={styles.input}
+                  placeholder="Password"
+                  value={this.state.controls.password.value}
+                  valid={this.state.controls.password.valid}
+                  touched={this.state.controls.password.touched}
+                  onChangeText={(value) => this.onChangedTextHandler('password', value)}
+                  secureTextEntry
+                />
               </View>
-              <View style={this.state.viewMode === 'portrait' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
-                <DefaultInput style={styles.input} placeholder="Password" />
-              </View>
+              {signUpView}
             </View>
           </View>
-          <Button onPress={this.signInHandler} title="Sign In" />
-          <Text style={{ margin: 10 }} onPress={this.openSignUpView}>Don't have account? Sign Up!</Text>
-        </View>
+          </TouchableWithoutFeedback>
+          <Button
+            disabled={
+              !this.state.controls.confirmPassword.valid && this.state.authMode === "signup" ||
+              !this.state.controls.email.valid ||
+              !this.state.controls.password.valid
+            }
+            onPress={this.authSubmitHandler}
+            title={this.state.authMode === 'signin' ? "Sign In" : "Sign Up"}
+          />
+          <Text style={{ margin: 10, color: 'white' }} onPress={this.changeView}>{this.state.authMode === 'signin' ? "Don't have account? Sign Up!" : "Back to Sign In"}</Text>
+        </KeyboardAvoidingView>
       </ImageBackground>
     );
   }

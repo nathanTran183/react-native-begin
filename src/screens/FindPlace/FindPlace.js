@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native
 import { Navigation } from 'react-native-navigation';
 import PlaceList from '../../components/PlaceList/PlaceList';
 import { connect } from 'react-redux';
+import { toHome } from '../../navigations/navigation';
 // import {PlacesActions} from '../../store/actions/index';
 
 class FindPlaceScreen extends Component {
@@ -31,9 +32,9 @@ class FindPlaceScreen extends Component {
     });
   }
 
-  selectPlaceHandler = key => {
+  selectPlaceHandler = async key => {
     const selectedPlace = this.props.places.find(x => x.key === key);
-    Navigation.push(this.props.componentId, {
+    await Navigation.push(this.props.componentId, {
       component: {
         name: 'RNCourse.PlaceDetailScreen',
         passProps: {
@@ -55,28 +56,34 @@ class FindPlaceScreen extends Component {
       toValue: 0,
       duration: 1000,
       useNativeDriver: true
-    }).start()
+    }).start(() => {
+      this.setState({
+        placesLoaded: true
+      });
+
+    })
   }
 
   render() {
     // console.log(this.props);
     let content = (
-      <Animated.View style={{
-        opacity: this.state.fadeAnim,
-        transform: [
-          {
-            scale: this.state.fadeAnim.interpolate({
-              inputRange: [0,1],
-              outputRange: [12, 1]
-            })
-          }
-        ]
-      }}>
-      <TouchableOpacity onPress={this.placesSearchHandler}>
-        <View style={styles.searchButton}>
-          <Text style={styles.searchButtonText}>Find Place</Text>
-        </View>
-      </TouchableOpacity>
+      <Animated.View
+        style={{
+          opacity: this.state.fadeAnim,
+          transform: [
+            {
+              scale: this.state.fadeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [12, 1]
+              })
+            }
+          ]
+        }}>
+        <TouchableOpacity onPress={this.placesSearchHandler}>
+          <View style={styles.searchButton}>
+            <Text style={styles.searchButtonText}>Find Place</Text>
+          </View>
+        </TouchableOpacity>
       </Animated.View>
     );
     if (this.state.placesLoaded) {
@@ -84,7 +91,7 @@ class FindPlaceScreen extends Component {
         <PlaceList places={this.props.places} onItemSelected={this.selectPlaceHandler} />
       );
     }
-    return <View style={this.state.placesLoaded ? null : styles.buttonContainer}>{content}</View>
+    return (<View style={this.state.placesLoaded ? null : styles.buttonContainer}>{content}</View>)
 
   }
 }
