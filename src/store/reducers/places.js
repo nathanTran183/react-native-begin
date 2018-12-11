@@ -15,7 +15,8 @@ const addPlace = (state, action) => {
   let newPlaces = state.places.concat({
     key: Math.random(),
     name: action.data.placeName,
-    img: { uri: 'https://www.visitbritain.com/sites/default/files/consumer_destinations/teaser_images/manchester_town_hall.jpg' }
+    location: action.data.location,
+    img: action.data.image
   });
   return updatedObject(state, { places: newPlaces });
 }

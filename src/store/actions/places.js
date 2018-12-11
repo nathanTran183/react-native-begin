@@ -1,11 +1,13 @@
 import ActionTypes from './ActionTypes';
 
 export const PlacesActions = {
-  addPlace: (placeName) => {
+  addPlace: (placeName, location, image) => {
     return {
       type: ActionTypes.ADD_PLACE,
       data: {
-        placeName: placeName
+        placeName: placeName,
+        location: location,
+        image: image
       }
     }
   },

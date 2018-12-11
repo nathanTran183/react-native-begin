@@ -13,7 +13,15 @@ import { PlacesActions } from '../../store/actions/index';
 class SharePlaceScreen extends Component {
 
   state = {
-    placeName: ""
+    placeName: "",
+    location: {
+      value: null,
+      valid: false
+    },
+    image: {
+      value: null,
+      valid: false
+    }
   }
 
   constructor(props) {
@@ -33,15 +41,41 @@ class SharePlaceScreen extends Component {
   };
 
   addPlaceHandler = () => {
-    if (this.state.placeName.trim() !== '') {
-      this.props.addPlace(this.state.placeName);
-      this.setState({placeName: ''})
-    }
+    this.props.addPlace(this.state.placeName, this.state.location.value, this.state.image.value);
+    this.setState({
+      placeName: '',
+      location: {
+        value: null,
+        valid: false
+      },
+      image: {
+        value: null,
+        valid: false
+      }
+    })
   };
 
   placeNameChangedHandler = value => {
     this.setState({ placeName: value })
   };
+
+  locationPickedHandler = location => {
+    this.setState({
+      location: {
+        value: location,
+        valid: true
+      }
+    })
+  }
+
+  imagePickedHandler = image => {
+    this.setState({
+      image: {
+        value: image,
+        valid: true
+      }
+    })
+  }
 
   render() {
     return (
@@ -50,11 +84,14 @@ class SharePlaceScreen extends Component {
           <MainText>
             <HeadingText>Share Us Your Places</HeadingText>
           </MainText>
-          <PickImage />
-          <PickLocation />
+          <PickImage onImagePicked={this.imagePickedHandler} />
+          <PickLocation onLocationPicked={this.locationPickedHandler} />
           <PlaceInput onChangeText={this.placeNameChangedHandler} placeName={this.state.placeName} placeholder="Place Name" />
           <View style={styles.button}>
-            <Button title="Share This Place" onPress={this.addPlaceHandler} />
+            <Button
+              title="Share This Place"
+              onPress={this.addPlaceHandler}
+              disabled={this.state.placeName === "" || !this.state.location.valid || !this.state.image.valid} />
           </View >
         </View>
       </ScrollView>
@@ -81,7 +118,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    addPlace: (placeName) => dispatch(PlacesActions.addPlace(placeName))
+    addPlace: (placeName, location, image) => dispatch(PlacesActions.addPlace(placeName, location, image))
   }
 }
 

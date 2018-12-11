@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import { PlacesActions } from '../../store/actions/index';
@@ -16,6 +17,11 @@ class PlaceDetail extends Component {
       <View style={styles.container}>
         <View>
           <Image source={this.props.selectedPlace.img} style={styles.placeImage} />
+          <MapView
+            initialRegion={this.props.selectedPlace.location}
+            style={styles.map}>
+            <MapView.Marker coordinate={this.props.selectedPlace.location} />
+          </MapView>
           <Text style={styles.placeName}>{this.props.selectedPlace.name}</Text>
         </View>
         <View>
@@ -46,6 +52,10 @@ const styles = StyleSheet.create({
   },
   deletePlaceBtn: {
     alignItems: 'center',
+  },
+  map: {
+    width: '100%',
+    height: 250
   }
 })
 
