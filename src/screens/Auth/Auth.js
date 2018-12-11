@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, Dimensions, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
@@ -87,7 +87,7 @@ class AuthScreen extends Component {
           ...prevState.controls,
           confirmPassword: {
             ...prevState.controls.confirmPassword,
-            valid: key === 'password' ? validate(prevState.controls.confirmPassword.value, prevState.controls.password.value, connectedValue) : prevState.controls.confirmPassword.valid
+            valid: key === 'password' ? validate(prevState.controls.confirmPassword.value, prevState.controls.confirmPassword.validationRules, connectedValue) : prevState.controls.confirmPassword.valid
           },
           [key]: {
             ...prevState.controls[key],
@@ -119,10 +119,11 @@ class AuthScreen extends Component {
       signUpView = null;
     return (
       <ImageBackground style={styles.backgroundImage} source={BackgroundImg}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
           <MainText>
-            <HeadingText style={styles.headingText}>Sign In</HeadingText>
+            <HeadingText style={styles.headingText}>{this.state.authMode === 'signin' ? 'Sign In' : 'Sign Up'}</HeadingText>
           </MainText>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inputContainer}>
             <DefaultInput style={styles.input}
               placeholder="Email Address"
@@ -131,8 +132,8 @@ class AuthScreen extends Component {
               touched={this.state.controls.email.touched}
               onChangeText={(value) => this.onChangedTextHandler('email', value)}
               keyboardType="email-address"
-              autoCorrect="none"
-              autoCapitalize={false}
+              autoCorrect={false}
+              autoCapitalize="none"
             />
             <View style={this.state.viewMode === 'portrait' || this.state.authMode === 'signin' ? styles.portraitInputContainer : styles.landscapeInputContainer}>
               <View style={this.state.viewMode === 'portrait' || this.state.authMode === 'signin' ? styles.portraitInputWrapper : styles.landscapeInputWrapper}>
@@ -149,6 +150,7 @@ class AuthScreen extends Component {
               {signUpView}
             </View>
           </View>
+          </TouchableWithoutFeedback>
           <Button
             disabled={
               !this.state.controls.confirmPassword.valid && this.state.authMode === "signup" ||
@@ -159,7 +161,7 @@ class AuthScreen extends Component {
             title={this.state.authMode === 'signin' ? "Sign In" : "Sign Up"}
           />
           <Text style={{ margin: 10, color: 'white' }} onPress={this.changeView}>{this.state.authMode === 'signin' ? "Don't have account? Sign Up!" : "Back to Sign In"}</Text>
-        </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     );
   }
