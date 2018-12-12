@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Button, ScrollView, StyleSheet } from 'react-native';
+import { View, Button, ScrollView, StyleSheet, ActivityIndicator, Text } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import { connect } from 'react-redux';
 
@@ -27,7 +27,6 @@ class SharePlaceScreen extends Component {
   constructor(props) {
     super(props);
     Navigation.events().bindComponent(this);
-    // popToRoot(this.props.componentId);
   }
 
   navigationButtonPressed({ buttonId }) {
@@ -43,15 +42,7 @@ class SharePlaceScreen extends Component {
   addPlaceHandler = () => {
     this.props.addPlace(this.state.placeName, this.state.location.value, this.state.image.value);
     this.setState({
-      placeName: '',
-      location: {
-        value: null,
-        valid: false
-      },
-      image: {
-        value: null,
-        valid: false
-      }
+      placeName: ''
     })
   };
 
@@ -78,24 +69,31 @@ class SharePlaceScreen extends Component {
   }
 
   render() {
-    return (
-      <ScrollView>
-        <View style={styles.container}>
-          <MainText>
-            <HeadingText>Share Us Your Places</HeadingText>
-          </MainText>
-          <PickImage onImagePicked={this.imagePickedHandler} />
-          <PickLocation onLocationPicked={this.locationPickedHandler} />
-          <PlaceInput onChangeText={this.placeNameChangedHandler} placeName={this.state.placeName} placeholder="Place Name" />
-          <View style={styles.button}>
-            <Button
-              title="Share This Place"
-              onPress={this.addPlaceHandler}
-              disabled={this.state.placeName === "" || !this.state.location.valid || !this.state.image.valid} />
-          </View >
-        </View>
-      </ScrollView>
+    let content = (
+      <Button
+        title="Share This Place"
+        onPress={this.addPlaceHandler}
+        disabled={this.state.placeName === "" || !this.state.location.valid || !this.state.image.valid} />
     )
+    if (this.props.isLoading) {
+      content = (
+        <ActivityIndicator />
+      )
+    }
+
+    return (<ScrollView>
+      <View style={styles.container}>
+        <MainText>
+          <HeadingText>Share Us Your Places</HeadingText>
+        </MainText>
+        <PickImage onImagePicked={this.imagePickedHandler} />
+        <PickLocation onLocationPicked={this.locationPickedHandler} />
+        <PlaceInput onChangeText={this.placeNameChangedHandler} placeName={this.state.placeName} placeholder="Place Name" />
+        <View style={styles.button}>
+          {content}
+        </View >
+      </View>
+    </ScrollView>)
   }
 }
 
@@ -116,10 +114,16 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = state => {
+  return {
+    isLoading: state.ui.isLoading
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     addPlace: (placeName, location, image) => dispatch(PlacesActions.addPlace(placeName, location, image))
   }
 }
 
-export default connect(null, mapDispatchToProps)(SharePlaceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SharePlaceScreen);

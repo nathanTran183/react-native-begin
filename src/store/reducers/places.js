@@ -1,14 +1,7 @@
 import ActionTypes from '../actions/ActionTypes';
-
+import { updatedObject } from '../../utilities/updateObject';
 const initialState = {
   places: []
-}
-
-const updatedObject = (oldObject, updatedObject) => {
-  return {
-    ...oldObject,
-    ...updatedObject
-  }
 }
 
 const addPlace = (state, action) => {
