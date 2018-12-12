@@ -1,6 +1,15 @@
 import ActionTypes from './ActionTypes';
 import { UIActions } from './index';
 
+const setPlace = places => {
+  return {
+    type: ActionTypes.SET_PLACES,
+    data: {
+      places: places
+    }
+  }
+}
+
 export const PlacesActions = {
   addPlace: (placeName, location, image) => {
     return dispatch => {
@@ -30,6 +39,29 @@ export const PlacesActions = {
         .then(parsedRes => {
           console.log('upload success')
           dispatch(UIActions.uiStopLoading())
+        })
+    }
+  },
+
+  fetchPlaces: () => {
+    return dispatch => {
+      dispatch(UIActions.uiStartLoading());
+      fetch('https://rn-courses.firebaseio.com/places.json')
+        .catch(err => dispatch(UIActions.uiStopLoading()))
+        .then(res => res.json())
+        .then(places => {
+          places = Object.keys(places).map(key => {
+            return {
+              ...places[key],
+              img: {
+                uri: places[key].image
+              },
+              name: places[key].placeName,
+              id: key
+            }
+          });
+          dispatch(setPlace(places));
+          dispatch(UIActions.uiStopLoading());
         })
     }
   },

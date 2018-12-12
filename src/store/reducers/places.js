@@ -4,6 +4,10 @@ const initialState = {
   places: []
 }
 
+const setPlaces = (state, action) => {
+  return updatedObject(state, { places: action.data.places })
+}
+
 const addPlace = (state, action) => {
   let newPlaces = state.places.concat({
     key: Math.random(),
@@ -23,6 +27,8 @@ const deletePlace = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case ActionTypes.SET_PLACES:
+      return setPlaces(state, action);
     case ActionTypes.ADD_PLACE:
       return addPlace(state, action);
     case ActionTypes.DELETE_PLACE:

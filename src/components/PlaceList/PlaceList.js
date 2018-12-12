@@ -6,12 +6,12 @@ const PlaceInput = (props) => {
 
   return (
     <FlatList
-      keyExtractor={(item, index) => (item.key + "")}
+      keyExtractor={(item, index) => (item.id)}
       style={styles.listItemContainer}
       data={props.places}
       renderItem={({ item }) => (
         <ListItem
-          onItemPressed={() => props.onItemSelected(item.key)}
+          onItemPressed={() => props.onItemSelected(item.id)}
           placeName={item.name}
           placeImage={item.img}
         />

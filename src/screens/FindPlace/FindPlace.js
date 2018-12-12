@@ -4,7 +4,7 @@ import { Navigation } from 'react-native-navigation';
 import PlaceList from '../../components/PlaceList/PlaceList';
 import { connect } from 'react-redux';
 import { toHome } from '../../navigations/navigation';
-// import {PlacesActions} from '../../store/actions/index';
+import {PlacesActions} from '../../store/actions/index';
 
 class FindPlaceScreen extends Component {
 
@@ -22,6 +22,10 @@ class FindPlaceScreen extends Component {
     });
   }
 
+  componentDidMount() {
+    this.props.fetchPlaces();
+  }
+
   navigationButtonPressed({ buttonId }) {
     Navigation.mergeOptions(this.props.componentId, {
       sideMenu: {
@@ -32,8 +36,8 @@ class FindPlaceScreen extends Component {
     });
   }
 
-  selectPlaceHandler = async key => {
-    const selectedPlace = this.props.places.find(x => x.key === key);
+  selectPlaceHandler = async id => {
+    const selectedPlace = this.props.places.find(x => x.id === id);
     await Navigation.push(this.props.componentId, {
       component: {
         name: 'RNCourse.PlaceDetailScreen',
@@ -121,4 +125,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(FindPlaceScreen);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchPlaces: () => dispatch(PlacesActions.fetchPlaces())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FindPlaceScreen);
