@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet, Platform, ActivityIndicator, Alert } from 'react-native';
 import MapView from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -8,12 +8,25 @@ import { Navigation } from 'react-native-navigation';
 
 class PlaceDetail extends Component {
   deletePlace = () => {
-    this.props.deletePlace(this.props.selectedPlace.key);
-    Navigation.popToRoot(this.props.componentId);
+    Alert.alert(
+      'Delete ' + this.props.selectedPlace.name,
+      'Do you want to delete this place?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        {
+          text: 'OK', onPress: () => {
+            this.props.removePlace(this.props.selectedPlace.id);
+            Navigation.popToRoot(this.props.componentId);
+          }
+        },
+      ],
+      // { cancelable: false }
+    )
+
   }
 
   render() {
-    return (
+    let content = (
       <View style={styles.container}>
         <View>
           <Image source={this.props.selectedPlace.img} style={styles.placeImage} />
@@ -31,6 +44,17 @@ class PlaceDetail extends Component {
             </View>
           </TouchableOpacity>
         </View>
+      </View>
+    )
+    if (this.props.isLoading)
+      content = (
+        <View style={styles.container}>
+          <ActivityIndicator />
+        </View>
+      )
+    return (
+      <View>
+        {content}
       </View>
     )
   }
@@ -59,10 +83,16 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
   return {
-    deletePlace: (key) => dispatch(PlacesActions.deletePlace(key))
+    isLoading: state.ui.isLoading
   }
 }
 
-export default connect(null, mapDispatchToProps)(PlaceDetail);
+const mapDispatchToProps = dispatch => {
+  return {
+    removePlace: (id) => dispatch(PlacesActions.removePlace(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceDetail);

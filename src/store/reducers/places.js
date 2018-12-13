@@ -20,7 +20,7 @@ const addPlace = (state, action) => {
 
 const deletePlace = (state, action) => {
   let newPlaces = state.places.filter(place => {
-    return place.key !== action.data.key
+    return place.id !== action.data.id
   });
   return updatedObject(state, { places: newPlaces });
 }

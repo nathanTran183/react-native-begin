@@ -91,7 +91,7 @@ export const toHome = (tabIndex = 0) => {
                       ],
                     },
                     bottomTab: {
-                      text: 'Share Place',
+                      text: 'Place Detailed',
                       icon: sources[0],
                       iconColor: '#99b6de',
                       textColor: '#99b6de',

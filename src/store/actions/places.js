@@ -1,15 +1,6 @@
 import ActionTypes from './ActionTypes';
 import { UIActions } from './index';
 
-const setPlace = places => {
-  return {
-    type: ActionTypes.SET_PLACES,
-    data: {
-      places: places
-    }
-  }
-}
-
 export const PlacesActions = {
   addPlace: (placeName, location, image) => {
     return dispatch => {
@@ -43,6 +34,15 @@ export const PlacesActions = {
     }
   },
 
+  setPlace: places => {
+    return {
+      type: ActionTypes.SET_PLACES,
+      data: {
+        places: places
+      }
+    }
+  },
+
   fetchPlaces: () => {
     return dispatch => {
       dispatch(UIActions.uiStartLoading());
@@ -60,18 +60,36 @@ export const PlacesActions = {
               id: key
             }
           });
-          dispatch(setPlace(places));
+          dispatch(PlacesActions.setPlace(places));
           dispatch(UIActions.uiStopLoading());
         })
     }
   },
 
-  deletePlace: (key) => {
+  deletePlace: (id) => {
     return {
       type: ActionTypes.DELETE_PLACE,
       data: {
-        key: key
+        id: id
       }
+    }
+  },
+
+  removePlace: id => {
+    return dispatch => {
+      dispatch(UIActions.uiStartLoading());
+      fetch('https://rn-courses.firebaseio.com/places/' + id + '.json', {
+        method: 'DELETE'
+      })
+        .catch(err => {
+          alert("Something went wrong, sorry :/");
+          dispatch(UIActions.uiStopLoading());
+        })
+        .then(res => res.json())
+        .then(parsedRes => {
+          dispatch(PlacesActions.deletePlace(id));
+          dispatch(UIActions.uiStopLoading());
+        });
     }
   }
 }
